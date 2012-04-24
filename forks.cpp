@@ -51,11 +51,17 @@ int main(int argc, char *argv[]) {
 			listAttributes(argv[2], status);
 		} // End list entry
 		else if (strcmp(argv[1], "-g") == 0) {
-			status = getxattr(argv[3], argv[2], NULL, NULL, 0, NO_OPTIONS);
+			status = getxattr(argv[3], argv[2], NULL, NULL, NULL, NO_OPTIONS);
 			getAttribute(argv[3], argv[2], status);
 		} // End get entry
 		else if (strcmp(argv[1], "-s") == 0) {
-			printf("Setting extended attributes.\n\n");
+			printf("Setting extended attribute %s to %s for %s.\n\n", argv[2], argv[3], argv[4]);
+			status = setxattr(argv[4], argv[2], argv[3], strlen(argv[3]), NULL, NO_OPTIONS);
+			if (status == -1) {
+				perror("Failed to set attribute");
+				return 0;
+			}
+			printf("Attribute %s set to %s for %s.\n\n", argv[2], argv[3], argv[4]);
 		} // End set entry
 		else if (strcmp(argv[1], "-r") == 0) {
 			printf("Removing extended attributes.\n\n");
