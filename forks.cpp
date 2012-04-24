@@ -14,11 +14,13 @@
 
 // Includes
 #include <iostream>
+#include <string>
 #include <stdlib.h>
 // #include <unistd.h>
 #include <dirent.h>
 #include <sys/stat.h>
 #include <sys/xattr.h>
+using namespace std;
 
 // Definitions
 #define MAX_BUFFER_SIZE 100
@@ -27,6 +29,7 @@
 
 // Function Prototypes
 void listAttributes(const char *path, int size);
+void getAttribute(const char *path, const char *attributeName, int size);
 
 // Main
 int main(int argc, char *argv[]) {
@@ -39,16 +42,15 @@ int main(int argc, char *argv[]) {
 	} // End usage statements
 	else {
 		// Variables
-		int size;
 		int status;
 
 		if (strcmp(argv[1], "-l") == 0) {
-			printf("Listing extended attributes.\n\n");
-			size = listxattr(argv[2], NULL, 0, NO_OPTIONS);
-			listAttributes(argv[2], size * MAX_FILENAME_SIZE);
+			status = listxattr(argv[2], NULL, 0, NO_OPTIONS);
+			listAttributes(argv[2], status);
 		} // End list entry
 		else if (strcmp(argv[1], "-g") == 0) {
-			printf("Getting extended attributes.\n\n");
+			status = getxattr(argv[3], argv[2], NULL, NULL, 0, NO_OPTIONS);
+			getAttribute(argv[3], argv[2], status);
 		} // End get entry
 		else if (strcmp(argv[1], "-s") == 0) {
 			printf("Setting extended attributes.\n\n");
@@ -66,17 +68,51 @@ int main(int argc, char *argv[]) {
 } // End main
 
 // Function Definitions
-
 // ################################################
 void listAttributes(const char *path, int size) {
 	// Variables
-	int statussize;
+	int status;
 	char buffer[size];
 
-	statussize = listxattr(
+	status = listxattr(path, buffer, size, XATTR_SHOWCOMPRESSION);
 
-	printf("size: %d\n", size);
-}
+	if (status == 0) {
+		printf("No extended attributes exist for %s.\n", path);
+	} // End no-ext-attribs
+	else if (status == -1) {
+		perror("An error occurred while retrieving the list of extended attributes for the file(s) given");
+	} // End error-listing-ext-attribs
+	else {
+		// Variables
+		char *attribute;
+
+		printf("Listing extended attributes for %s:\n\n", path);
+
+		for (int i = 0; i < size; i++)
+			if (buffer[i] == '\0')
+				buffer[i] = '\n';
+
+		attribute = strtok(buffer, "\n");
+		while (attribute) {
+			printf("%s: %s\n", path, attribute);
+			attribute = strtok(NULL, "\0");
+		}
+	} // End list-ext-attribs 
+} // End List Attributes
 
 // ################################################
-// getAttribute(
+void getAttribute(const char *path, const char *attributeName, int size) {
+	// Variables
+	int status;
+	char buffer[size];
+
+	status = getxattr(path, attributeName, buffer, size, 0, XATTR_SHOWCOMPRESSION);
+
+	if (status == -1) {
+		perror("An error occurred while retrieving the value of the extended attribute for the file given");
+	} // End bad-ext-attrib
+	else {
+		printf("Getting extended attribute %s for %s:\n\n", attributeName, path);
+		printf("%s\n", buffer);
+	} // End get-ext-attrib
+} // End Get Attribtues
