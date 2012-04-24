@@ -2,14 +2,14 @@
 // Student name: Mark Smullen
 // Course: COSC 3503 - Operating Systems
 // Assignment: #13 - Named Forks Demo
-// File name: forks.cpp
-// Program's Purpose: To use the four named fork functions
+// File name: lsextended.cpp
+// Program's Purpose: To use the four 'named fork' functions
 // Program's Limitations: Assumes the user does not input invalid information.
 // Development Computer: MacBook Pro 5,5 (Model A1278)
 // Operating System:Mac OS X 10.6.7 (Snow Leopard)
 // Integrated Development Environment (IDE): VIM
 // Compiler: G++
-// Program's Operational Status: In progress
+// Program's Operational Status: First version complete.
 ///////////////////////////////////////////////////////////////////
 
 // Includes
