@@ -64,7 +64,13 @@ int main(int argc, char *argv[]) {
 			printf("Attribute %s set to %s for %s.\n\n", argv[2], argv[3], argv[4]);
 		} // End set entry
 		else if (strcmp(argv[1], "-r") == 0) {
-			printf("Removing extended attributes.\n\n");
+			printf("Removing extended attribute %s for %s.\n\n", argv[2], argv[3]);
+			status = removexattr(argv[3], argv[2], XATTR_SHOWCOMPRESSION);
+			if (status == -1) {
+				perror("Failed to remove attribute");
+				return 0;
+			}
+			printf("Attribute %s removed for %s.\n\n", argv[2], argv[3]);
 		} // End remove entry
 		else {
 			printf("Error in input! We should have never gotten here; aborting.\n\n");
