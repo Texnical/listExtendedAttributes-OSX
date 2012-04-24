@@ -44,6 +44,8 @@ int main(int argc, char *argv[]) {
 		// Variables
 		int status;
 
+		printf("\n");
+
 		if (strcmp(argv[1], "-l") == 0) {
 			status = listxattr(argv[2], NULL, 0, NO_OPTIONS);
 			listAttributes(argv[2], status);
@@ -94,7 +96,7 @@ void listAttributes(const char *path, int size) {
 
 		attribute = strtok(buffer, "\n");
 		while (attribute) {
-			printf("%s: %s\n", path, attribute);
+			printf("%s\n", attribute);
 			attribute = strtok(NULL, "\0");
 		}
 	} // End list-ext-attribs 
@@ -113,6 +115,6 @@ void getAttribute(const char *path, const char *attributeName, int size) {
 	} // End bad-ext-attrib
 	else {
 		printf("Getting extended attribute %s for %s:\n\n", attributeName, path);
-		printf("%s\n", buffer);
+		printf("%s\n\n", buffer);
 	} // End get-ext-attrib
 } // End Get Attribtues
