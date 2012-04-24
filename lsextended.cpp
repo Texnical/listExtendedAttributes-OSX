@@ -15,16 +15,10 @@
 // Includes
 #include <iostream>
 #include <string>
-#include <stdlib.h>
-// #include <unistd.h>
-#include <dirent.h>
-#include <sys/stat.h>
 #include <sys/xattr.h>
 using namespace std;
 
 // Definitions
-#define MAX_BUFFER_SIZE 100
-#define MAX_FILENAME_SIZE 50
 #define NO_OPTIONS 0
 
 // Function Prototypes
